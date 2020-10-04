@@ -36,7 +36,7 @@ def update_winery_request(id, request):
 
     if not validate_address(request):
         return {"erro": "Não é possível enviar endereço vazio"}, 400
-    
+
     id = ObjectId(id)
     db = MongoDB()
     connection_is_alive = db.test_connection()
