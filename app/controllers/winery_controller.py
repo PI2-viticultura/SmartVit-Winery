@@ -24,7 +24,9 @@ def save_winery_request(request):
     connection_is_alive = db.test_connection()
     if connection_is_alive:
         contract_id = ObjectId(request['contract_id'])
+        del request['contract_id']
         contract = db.get_one(contract_id, 'contracts')
+
         if not contract:
             return {"erro": "Insira um contrato válido"}, 400
 
@@ -34,8 +36,8 @@ def save_winery_request(request):
                 winery = db.get_one(winery.inserted_id, 'winery')
 
         else:
-            if(db.update_one(contract['winery']['id'], request)):
-                winery = db.get_one(contract['winery']['id'], 'winery')
+            if(db.update_one(contract['winery']['_id'], request)):
+                winery = db.get_one(contract['winery']['_id'], 'winery')
                 contract['winery'] = winery
 
         if winery:
@@ -65,6 +67,7 @@ def update_winery_request(id, request):
 
     id = ObjectId(id)
     contract_id = ObjectId(request['contract_id'])
+    del request['contract_id']
 
     db = MongoDB()
     connection_is_alive = db.test_connection()

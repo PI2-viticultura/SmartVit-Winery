@@ -25,8 +25,7 @@ class MongoDB():
 
     def get_collection(self, collection='winery'):
         db = self.client['smart-dev']
-        collection = db['winery']
-        return collection
+        return db[collection]
 
     def insert_one(self, body):
         try:
@@ -64,5 +63,5 @@ class MongoDB():
 
     def get_one(self, identifier, collection='winery'):
         collection = self.get_collection(collection)
-        document = collection.find_one({"id": identifier})
+        document = collection.find_one({"_id": identifier})
         return document
