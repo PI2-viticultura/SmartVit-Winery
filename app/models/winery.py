@@ -23,7 +23,7 @@ class MongoDB():
     def close_connection(self):
         self.client.close()
 
-    def get_collection(self):
+    def get_collection(self, collection='winery'):
         db = self.client['smart-dev']
         collection = db['winery']
         return collection
@@ -31,15 +31,14 @@ class MongoDB():
     def insert_one(self, body):
         try:
             collection = self.get_collection()
-            collection.insert_one(body)
-            return True
+            return collection.insert_one(body)
         except Exception as err:
             print(f'Erro ao inserir no banco de dados: {err}')
             return False
 
-    def update_one(self, id, body):
+    def update_one(self, id, body, collection='winery'):
         try:
-            collection = self.get_collection()
+            collection = self.get_collection(collection)
 
             collection.find_one_and_update(
                 {"_id": id},
@@ -63,7 +62,7 @@ class MongoDB():
         except Exception as err:
             print(f'Erro ao deletar no banco de dados: {err}')
 
-    def get_one(self, identifier):
-        collection = self.get_collection()
+    def get_one(self, identifier, collection='winery'):
+        collection = self.get_collection(collection)
         document = collection.find_one({"id": identifier})
         return document
