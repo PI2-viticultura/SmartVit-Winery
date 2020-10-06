@@ -24,7 +24,7 @@ def save_winery_request(request):
     connection_is_alive = db.test_connection()
     if connection_is_alive:
         contract_id = ObjectId(request['contract_id'])
-        del request['contract_id']
+        request.pop('contract_id', None)
         contract = db.get_one(contract_id, 'contracts')
 
         if not contract:
@@ -67,7 +67,7 @@ def update_winery_request(id, request):
 
     id = ObjectId(id)
     contract_id = ObjectId(request['contract_id'])
-    del request['contract_id']
+    request.pop('contract_id', None)
 
     db = MongoDB()
     connection_is_alive = db.test_connection()
