@@ -12,7 +12,9 @@ def winery():
         return controller.save_winery_request(request.json)
 
 
-@app.route("/winery/<string:id>", methods=["PUT"])
+@app.route("/winery/<string:id>", methods=["PUT", "DELETE"])
 def winery_put(id):
     if request.method == "PUT":
         return controller.update_winery_request(id, request.json)
+    elif request.method == "DELETE":
+        return controller.delete_winery_request(id)

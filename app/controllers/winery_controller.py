@@ -50,7 +50,7 @@ def save_winery_request(request):
     return {'error': 'Something gone wrong'}, 500
 
 
-def update_winery_request(id, request):
+def update_winery_request(winery_id, request):
     if not validate_fields(request):
         return {
             "erro": "Sua requisição não informou todos os campos necessários"
@@ -65,23 +65,47 @@ def update_winery_request(id, request):
     if not validate_contract(request):
         return {"erro": "Não é possível enviar contrato vazio"}, 400
 
-    id = ObjectId(id)
+    winery_id = ObjectId(winery_id)
     contract_id = ObjectId(request['contract_id'])
     request.pop('contract_id', None)
 
     db = MongoDB()
     connection_is_alive = db.test_connection()
 
-    contract = db.get_one(contract_id, 'contracts')
-    if not contract:
-        return {"erro": "Insira um contrato válido"}, 400
-
     if connection_is_alive:
-        if(db.update_one(id, request)):
-            winery = db.get_one(id, 'winery')
+        contract = db.get_one(contract_id, 'contracts')
+        if not contract:
+            return {"erro": "Insira um contrato válido"}, 400
+
+        if(db.update_one(winery_id, request)):
+            winery = db.get_one(winery_id, 'winery')
             contract['winery'] = winery
             if(db.update_one(contract_id, contract, 'contracts')):
                 return {"message": "success"}, 200
+
+    db.close_connection()
+
+    return {'error': 'Something gone wrong'}, 500
+
+
+def delete_winery_request(winery_id):
+    winery_id = ObjectId(winery_id)
+
+    db = MongoDB()
+    connection_is_alive = db.test_connection()
+
+    if connection_is_alive:
+        winery = db.get_one(winery_id, 'winery')
+        if not winery:
+            return {'error': 'Winery not found'}, 204
+
+        winery['active'] = False
+        if(db.update_one(winery_id, winery)):
+            contract = db.get_contract_by_winery_id(winery_id)
+            if contract:
+                contract['winery'] = winery
+                if(db.update_one(contract['_id'], contract, 'contracts')):
+                    return {"message": "success"}, 200
 
     db.close_connection()
 

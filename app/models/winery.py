@@ -35,12 +35,12 @@ class MongoDB():
             print(f'Erro ao inserir no banco de dados: {err}')
             return False
 
-    def update_one(self, id, body, collection='winery'):
+    def update_one(self, identifier, body, collection='winery'):
         try:
             collection = self.get_collection(collection)
 
             collection.find_one_and_update(
-                {"_id": id},
+                {"_id": identifier},
                 {"$set": body}
             )
             return True
@@ -53,15 +53,16 @@ class MongoDB():
         try:
             collection = self.get_collection()
             res = collection.delete_one({"id": identifier})
-            if res.deleted_count == 1:
-                print(f'mensagem {identifier} removida com sucesso')
-            else:
-                print(f'Erro ao remover a mensagem {identifier}:'
-                      ' nenhuma mensagem encontrada para o id')
+            return res.deleted_count
         except Exception as err:
             print(f'Erro ao deletar no banco de dados: {err}')
+            return False
 
     def get_one(self, identifier, collection='winery'):
         collection = self.get_collection(collection)
         document = collection.find_one({"_id": identifier})
         return document
+
+    def get_contract_by_winery_id(self, identifier):
+        collection = self.get_collection('contracts')
+        return collection.find_one({"winery._id": identifier})
