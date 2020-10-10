@@ -13,9 +13,9 @@ def get_all_winery():
         winery = db.get_all('winery')
         if winery:
             return dumps(winery), 200
-        
+
         return {'error': 'Winery not found'}, 404
-    
+
     return {'error': 'Something gone wrong'}, 500
 
 
