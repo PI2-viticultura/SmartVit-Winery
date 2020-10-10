@@ -2,7 +2,21 @@ from models.winery import MongoDB
 from utils.validators import (
     validate_fields, validate_name, validate_address, validate_contract
 )
+from bson.json_util import dumps
 from bson import ObjectId
+
+
+def get_all_winery():
+    db = MongoDB()
+    connection_is_alive = db.test_connection()
+    if connection_is_alive:
+        winery = db.get_all('winery')
+        if winery:
+            return dumps(winery), 200
+        
+        return {'error': 'Winery not found'}, 404
+    
+    return {'error': 'Something gone wrong'}, 500
 
 
 def save_winery_request(request):

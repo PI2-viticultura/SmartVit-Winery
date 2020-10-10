@@ -63,6 +63,11 @@ class MongoDB():
         document = collection.find_one({"_id": identifier})
         return document
 
+    def get_all(self, collection='winery'):
+        collection = self.get_collection(collection)
+        document = collection.find()
+        return document
+
     def get_contract_by_winery_id(self, identifier):
         collection = self.get_collection('contracts')
         return collection.find_one({"winery._id": identifier})

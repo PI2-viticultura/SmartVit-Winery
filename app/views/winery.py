@@ -6,10 +6,12 @@ app = Blueprint('winery', __name__)
 CORS(app)
 
 
-@app.route("/winery", methods=["POST"])
+@app.route("/winery", methods=["POST", "GET"])
 def winery():
     if request.method == "POST":
         return controller.save_winery_request(request.json)
+    elif request.method == "GET":
+        return controller.get_all_winery()
 
 
 @app.route("/winery/<string:id>", methods=["PUT", "DELETE"])
