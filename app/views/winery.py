@@ -14,9 +14,9 @@ def winery():
         return controller.get_all_winery()
 
 
-@app.route("/winery/<string:id>", methods=["PUT", "DELETE"])
+@app.route("/winery/<string:id>", methods=["PUT", "PATCH"])
 def winery_put(id):
     if request.method == "PUT":
         return controller.update_winery_request(id, request.json)
-    elif request.method == "DELETE":
-        return controller.delete_winery_request(id)
+    elif request.method == "PATCH":
+        return controller.toggle_winery_request(id)
