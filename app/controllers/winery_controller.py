@@ -102,7 +102,7 @@ def update_winery_request(winery_id, request):
     return {'error': 'Something gone wrong'}, 500
 
 
-def delete_winery_request(winery_id):
+def toggle_winery_request(winery_id):
     winery_id = ObjectId(winery_id)
 
     db = MongoDB()
@@ -113,7 +113,11 @@ def delete_winery_request(winery_id):
         if not winery:
             return {'error': 'Winery not found'}, 204
 
-        winery['active'] = False
+        if 'active' not in winery.keys():
+            winery['active'] = False
+        else:
+            winery['active'] = not winery['active']
+
         if(db.update_one(winery_id, winery)):
             contract = db.get_contract_by_winery_id(winery_id)
             if contract:
