@@ -1,17 +1,17 @@
-from settings import load_database_params
+from settings import load_database_system_params
 import pymongo
 
 
 class MongoDB():
     def __init__(self):
         """Constructor to model class."""
-        self.params=load_database_params()
+        self.system_params = load_database_system_params()
         try:
-            self.client = pymongo.MongoClient(**self.params,
+            self.client = pymongo.MongoClient(**self.system_params,
                                               serverSelectionTimeoutMS=10)
         except Exception as err:
             print(f'Erro ao conectar no banco de dados: {err}')
-        
+
     def test_connection(self):
         try:
             self.client.server_info()
@@ -22,7 +22,7 @@ class MongoDB():
 
     def close_connection(self):
         self.client.close()
-    
+
     def get_collection(self, collection='system'):
         db = self.client['smart-dev']
         return db[collection]
@@ -45,11 +45,11 @@ class MongoDB():
                 {"$set": body}
             )
             return True
-        
+
         except Exception as err:
             print(f'Erro ao atualizar no banco de dados: {err}')
             return False
-        
+
     def delete_one(self, identifier):
         try:
             collection = self.get_collection()
@@ -58,7 +58,7 @@ class MongoDB():
         except Exception as err:
             print(f'Erro ao deletar no banco de dados: {err}')
             return False
-        
+ 
     def get_one(self, identifier, collection='system'):
         collection = self.get_collection(collection)
         document = collection.find_one({"_id": identifier})

@@ -31,9 +31,12 @@ def load_database_system_params():
     system_params = {
         "host": os.getenv("DB_HOST", DATABASE_CONFIG_SYSTEM["DB_HOST"]),
         "port": port,
-        "username": os.getenv("DB_USERNAME", DATABASE_CONFIG_SYSTEM["DB_USERNAME"]),
-        "password": os.getenv("DB_PASSWORD", DATABASE_CONFIG_SYSTEM["DB_PASSWORD"]),
-        "authSource": os.getenv("authSource", DATABASE_CONFIG_SYSTEM["authSource"]),
+        "username": os.getenv("DB_USERNAME",
+                              DATABASE_CONFIG_SYSTEM["DB_USERNAME"]),
+        "password": os.getenv("DB_PASSWORD",
+                              DATABASE_CONFIG_SYSTEM["DB_PASSWORD"]),
+        "authSource": os.getenv("authSource",
+                              DATABASE_CONFIG_SYSTEM["authSource"]),
         "authMechanism": os.getenv(
             "authMechanism",
             DATABASE_CONFIG_SYSTEM["authMechanism"]

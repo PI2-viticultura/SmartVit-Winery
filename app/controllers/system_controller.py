@@ -1,9 +1,11 @@
 from models.system import MongoDB
 from utils.validators import (
-    validate_fields_system, validate_latitude, validate_longitude, validate_status, validate_winery
+    validate_fields_system, validate_latitude, validate_longitude, 
+    validate_status, validate_winery
 )
 from bson.json_util import dumps
 from bson import ObjectId
+
 
 def get_all_system():
     db = MongoDB()
@@ -17,22 +19,24 @@ def get_all_system():
 
     return {'error': 'Something gone wrong'}, 500
 
+
 def save_system_request(request):
-    if not validate_fields(request):
-        return { "erro": "Sua requisição não informou todos os campos necessários"
+    if not validate_fields_system(request):
+        return {
+            "erro": "Sua requisição não informou todos os campos necessários"
         }, 400
 
     if not validate_latitude(request):
-        return { "erro": "Não é possível enviar latitude vazia"}, 400
+        return {"erro": "Não é possível enviar latitude vazia"}, 400
 
     if not validate_longitude(request):
-        return { "erro": "Não é possível enviar longitude vazia"}, 400
-    
+        return {"erro": "Não é possível enviar longitude vazia"}, 400
+
     if not validate_status(request):
-        return { "erro": "Não é possível enviar status vazio"}, 400
-    
+        return {"erro": "Não é possível enviar status vazio"}, 400
+
     if not validate_winery(request):
-        return { "erro": "Não é possível enviar vinícola vazia"}, 400
+        return {"erro": "Não é possível enviar vinícola vazia"}, 400
 
     db = MongoDB()
     connection_is_alive = db.test_connection()
@@ -65,22 +69,22 @@ def save_system_request(request):
 
 
 def update_system_request(system_id, request):
-    if not validate_fields(request):
+    if not validate_fields_system(request):
         return {
             "erro": "Sua requisição não informou todos os campos necessários"
         }, 400
 
     if not validate_latitude(request):
-        return { "erro": "Não é possível enviar latitude vazia"}, 400
+        return {"erro": "Não é possível enviar latitude vazia"}, 400
 
     if not validate_longitude(request):
-        return { "erro": "Não é possível enviar longitude vazia"}, 400
-    
+        return {"erro": "Não é possível enviar longitude vazia"}, 400
+
     if not validate_status(request):
-        return { "erro": "Não é possível enviar status vazio"}, 400
-    
+        return {"erro": "Não é possível enviar status vazio"}, 400
+
     if not validate_winery(request):
-        return { "erro": "Não é possível enviar vinícola vazia"}, 400
+        return {"erro": "Não é possível enviar vinícola vazia"}, 400
 
     system_id = ObjectId(system_id)
     winery_id = ObjectId(request['winery_id'])
