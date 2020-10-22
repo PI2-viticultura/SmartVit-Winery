@@ -13,3 +13,19 @@ def validate_address(request):
 
 def validate_contract(request):
     return request["contract_id"]
+
+def validate_fields_system(request):
+    fields = ['latitude', 'longitude', 'status','winery_id']
+    return all(field in request.keys() for field in fields)
+
+def validate_latitude(request):
+    return request["latitude"]
+
+def validate_longitude(request):
+    return request["longitude"]
+
+def validate_status(request):
+    return request["status"]
+
+def validate_winery(request):
+    return request["winery_id"]

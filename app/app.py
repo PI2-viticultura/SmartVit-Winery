@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
 from views.winery import app as winery
+from views.system import app as system
 
 app = Flask(__name__)
 app.register_blueprint(winery)
+app.register_blueprint(system)
 CORS(app, automatic_options=True)
 
 
