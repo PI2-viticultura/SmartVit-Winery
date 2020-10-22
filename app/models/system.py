@@ -58,7 +58,7 @@ class MongoDB():
         except Exception as err:
             print(f'Erro ao deletar no banco de dados: {err}')
             return False
- 
+
     def get_one(self, identifier, collection='system'):
         collection = self.get_collection(collection)
         document = collection.find_one({"_id": identifier})

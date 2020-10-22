@@ -14,9 +14,9 @@ def system():
         return controller.get_all_system()
 
 
-@app.route("/system/<string:id>", methods=["PUT", "PATCH"])
-def system_put(id):
+@app.route("/system/<string:identity>", methods=["PUT", "PATCH"])
+def system_put(identity):
     if request.method == "PUT":
-        return controller.update_system_request(id, request.json)
+        return controller.update_system_request(identity, request.json)
     elif request.method == "PATCH":
-        return controller.toggle_system_request(id)
+        return controller.toggle_system_request(identity)
