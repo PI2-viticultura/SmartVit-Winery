@@ -15,7 +15,7 @@ def sensor():
 
 
 @app.route("/sensor/<string:id>", methods=["PUT", "PATCH"])
-def sensor_put(id):
+def sensor_put(identity):
     if request.method == "PUT":
         return controller.update_sensor_request(id, request.json)
     elif request.method == "PATCH":

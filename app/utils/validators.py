@@ -18,6 +18,7 @@ def validate_contract(request):
 def validate_fields_sensor(request):
     fields = ['location', 'identifier', 'type',
               'situation', 'system_id']
+    return all(field in request.keys() for field in fields)
 
 
 def validate_location(request):
