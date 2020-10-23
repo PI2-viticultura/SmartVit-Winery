@@ -36,7 +36,7 @@ def load_database_sensor_params():
         "password": os.getenv("DB_PASSWORD",
                               DATABASE_CONFIG_SENSOR["DB_PASSWORD"]),
         "authSource": os.getenv("authSource",
-                              DATABASE_CONFIG_SENSOR["authSource"]),
+                                DATABASE_CONFIG_SENSOR["authSource"]),
         "authMechanism": os.getenv(
             "authMechanism",
             DATABASE_CONFIG_SENSOR["authMechanism"]

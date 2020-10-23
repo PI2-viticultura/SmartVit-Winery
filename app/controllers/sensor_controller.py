@@ -85,13 +85,13 @@ def update_sensor_request(sensor_id, request):
 
     if not validate_type(request):
         return {"erro": "Não é possível enviar tipo de sensor vazio"}, 400
-    
+
     if not validate_situation(request):
         return {"erro": "Não é possível enviar situação do sensor vazio"}, 400
 
     if not validate_system_id(request):
         return {"erro": "Não é possível enviar id de sistema vazio"}, 400
-    
+
     sensor_id = ObjectId(sensor_id)
     winery_id = ObjectId(request['winery_id'])
     request.pop('winery_id', None)
