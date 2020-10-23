@@ -43,12 +43,17 @@ def save_system_request(request):
     if connection_is_alive:
         winery_id = ObjectId(request['winery_id'])
         request.pop('winery_id', None)
-        winery = db.get_one(winery_id, 'winerys')
+        winery = db.get_one(winery_id, 'winery')
 
         if not winery:
             return {"erro": "Insira uma vinícola válida"}, 400
 
-        if not winery['system']:
+        if 'system' not in winery.keys():
+            system = db.insert_one(request)
+            if(system):
+                system = db.get_one(system.inserted_id, 'system')
+
+        elif not winery['system']:
             system = db.insert_one(request)
             if(system):
                 system = db.get_one(system.inserted_id, 'system')
@@ -60,7 +65,7 @@ def save_system_request(request):
 
         if system:
             winery['system'] = system
-            if(db.update_one(winery_id, winery, 'winerys')):
+            if(db.update_one(winery_id, winery, 'winery')):
                 return {"message": "success"}, 200
 
     db.close_connection()
@@ -94,14 +99,14 @@ def update_system_request(system_id, request):
     connection_is_alive = db.test_connection()
 
     if connection_is_alive:
-        winery = db.get_one(winery_id, 'winerys')
+        winery = db.get_one(winery_id, 'winery')
         if not winery:
             return {"erro": "Insira uma vinícola válida"}, 400
 
         if(db.update_one(system_id, request)):
             system = db.get_one(system_id, 'system')
             winery['system'] = system
-            if(db.update_one(winery_id, winery, 'winerys')):
+            if(db.update_one(winery_id, winery, 'winery')):
                 return {"message": "success"}, 200
 
     db.close_connection()
@@ -129,7 +134,7 @@ def toggle_system_request(system_id):
             winery = db.get_winery_by_system_id(system_id)
             if winery:
                 winery['system'] = system
-                if(db.update_one(winery['_id'], winery, 'winerys')):
+                if(db.update_one(winery['_id'], winery, 'winery')):
                     return {"message": "success"}, 200
 
     db.close_connection()
