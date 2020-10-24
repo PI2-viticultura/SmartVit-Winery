@@ -46,7 +46,7 @@ def save_sensor_request(request):
     if connection_is_alive:
         system_id = ObjectId(request['system_id'])
         request.pop('system_id', None)
-        system = db.get_one(system_id, 'winery')
+        system = db.get_one(system_id, 'system')
 
         if not system:
             return {"erro": "Insira um sistema válido"}, 400
@@ -63,7 +63,7 @@ def save_sensor_request(request):
 
         if sensor:
             system['sensor'] = sensor
-            if(db.update_one(system_id, system, 'winery')):
+            if(db.update_one(system_id, system, 'system')):
                 return {"message": "success"}, 200
 
     db.close_connection()
@@ -100,14 +100,14 @@ def update_sensor_request(sensor_id, request):
     connection_is_alive = db.test_connection()
 
     if connection_is_alive:
-        system = db.get_one(system_id, 'winery')
+        system = db.get_one(system_id, 'system')
         if not system:
             return {"erro": "Insira um Sistema válido"}, 400
 
         if(db.update_one(sensor_id, request)):
             sensor = db.get_one(sensor_id, 'sensor')
             system['sensor'] = sensor
-            if(db.update_one(system_id, system, 'winery')):
+            if(db.update_one(system_id, system, 'system')):
                 return {"message": "success"}, 200
 
     db.close_connection()
@@ -135,7 +135,7 @@ def toggle_sensor_request(sensor_id):
             system = db.get_system_by_sensor_id(sensor_id)
             if system:
                 system['sensor'] = sensor
-                if(db.update_one(system['_id'], system, 'winery')):
+                if(db.update_one(system['_id'], system, 'system')):
                     return {"message": "success"}, 200
 
     db.close_connection()
