@@ -8,6 +8,16 @@ DATABASE_CONFIG = {
     "collection": "winery"
 }
 
+DATABASE_CONFIG_SYSTEM = {
+    "DB_HOST": "winery-mongodb",
+    "DB_PORT": 27017,
+    "DB_USERNAME": "admin",
+    "DB_PASSWORD": "password",
+    "authSource": "",
+    "authMechanism": "SCRAM-SHA-256",
+    "collection": "systems"
+}
+
 DATABASE_CONFIG_SENSOR = {
     "DB_HOST": "winery-mongodb",
     "DB_PORT": 27017,
