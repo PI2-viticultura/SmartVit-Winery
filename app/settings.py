@@ -24,6 +24,7 @@ def load_database_params():
 
     return params
 
+
 def load_database_system_params():
     port = os.getenv("DB_PORT", DATABASE_CONFIG_SYSTEM["DB_PORT"])
     port = int(port)
@@ -44,6 +45,7 @@ def load_database_system_params():
     }
 
     return system_params
+
 
 def load_database_sensor_params():
     port = os.getenv("DB_PORT", DATABASE_CONFIG_SENSOR["DB_PORT"])
