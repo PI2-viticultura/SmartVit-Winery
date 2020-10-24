@@ -44,9 +44,9 @@ def save_sensor_request(request):
     db = MongoDB()
     connection_is_alive = db.test_connection()
     if connection_is_alive:
-        winery_id = ObjectId(request['winery_id'])
-        request.pop('winery_id', None)
-        winery = db.get_one(winery_id, 'winery')
+        system_id = ObjectId(request['system_id'])
+        request.pop('system_id', None)
+        winery = db.get_one(system_id, 'winery')
 
         if not winery:
             return {"erro": "Insira uma vinícola válida"}, 400
@@ -63,7 +63,7 @@ def save_sensor_request(request):
 
         if sensor:
             winery['sensor'] = sensor
-            if(db.update_one(winery_id, winery, 'winery')):
+            if(db.update_one(system_id, winery, 'winery')):
                 return {"message": "success"}, 200
 
     db.close_connection()
@@ -93,21 +93,21 @@ def update_sensor_request(sensor_id, request):
         return {"erro": "Não é possível enviar id de sistema vazio"}, 400
 
     sensor_id = ObjectId(sensor_id)
-    winery_id = ObjectId(request['winery_id'])
-    request.pop('winery_id', None)
+    system_id = ObjectId(request['system_id'])
+    request.pop('system_id', None)
 
     db = MongoDB()
     connection_is_alive = db.test_connection()
 
     if connection_is_alive:
-        winery = db.get_one(winery_id, 'winery')
+        winery = db.get_one(system_id, 'winery')
         if not winery:
             return {"erro": "Insira uma vinícola válida"}, 400
 
         if(db.update_one(sensor_id, request)):
             sensor = db.get_one(sensor_id, 'sensor')
             winery['sensor'] = sensor
-            if(db.update_one(winery_id, winery, 'winery')):
+            if(db.update_one(system_id, winery, 'winery')):
                 return {"message": "success"}, 200
 
     db.close_connection()
