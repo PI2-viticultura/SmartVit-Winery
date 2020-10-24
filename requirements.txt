@@ -15,6 +15,5 @@ requests==2.24.0
 pytest==6.0.2
 flake8
 coverage
-feature/bdd
 behave==1.2.6
 gunicorn
