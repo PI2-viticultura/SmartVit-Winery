@@ -69,6 +69,6 @@ class MongoDB():
         document = collection.find()
         return document
 
-    def get_winery_by_sensor_id(self, identifier):
-        collection = self.get_collection('winery')
+    def get_system_by_sensor_id(self, identifier):
+        collection = self.get_collection('system')
         return collection.find_one({"sensor._id": identifier})

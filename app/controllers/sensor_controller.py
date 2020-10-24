@@ -46,24 +46,24 @@ def save_sensor_request(request):
     if connection_is_alive:
         system_id = ObjectId(request['system_id'])
         request.pop('system_id', None)
-        winery = db.get_one(system_id, 'winery')
+        system = db.get_one(system_id, 'winery')
 
-        if not winery:
-            return {"erro": "Insira uma vinícola válida"}, 400
+        if not system:
+            return {"erro": "Insira um sistema válido"}, 400
 
-        if not winery['sensor']:
+        if not system['sensor']:
             sensor = db.insert_one(request)
             if(sensor):
                 sensor = db.get_one(sensor.inserted_id, 'sensor')
 
         else:
-            if(db.update_one(winery['sensor']['_id'], request)):
-                sensor = db.get_one(winery['sensor']['_id'], 'sensor')
-                winery['sensor'] = sensor
+            if(db.update_one(system['sensor']['_id'], request)):
+                sensor = db.get_one(system['sensor']['_id'], 'sensor')
+                system['sensor'] = sensor
 
         if sensor:
-            winery['sensor'] = sensor
-            if(db.update_one(system_id, winery, 'winery')):
+            system['sensor'] = sensor
+            if(db.update_one(system_id, system, 'winery')):
                 return {"message": "success"}, 200
 
     db.close_connection()
@@ -100,14 +100,14 @@ def update_sensor_request(sensor_id, request):
     connection_is_alive = db.test_connection()
 
     if connection_is_alive:
-        winery = db.get_one(system_id, 'winery')
-        if not winery:
-            return {"erro": "Insira uma vinícola válida"}, 400
+        system = db.get_one(system_id, 'winery')
+        if not system:
+            return {"erro": "Insira um Sistema válido"}, 400
 
         if(db.update_one(sensor_id, request)):
             sensor = db.get_one(sensor_id, 'sensor')
-            winery['sensor'] = sensor
-            if(db.update_one(system_id, winery, 'winery')):
+            system['sensor'] = sensor
+            if(db.update_one(system_id, system, 'winery')):
                 return {"message": "success"}, 200
 
     db.close_connection()
@@ -132,10 +132,10 @@ def toggle_sensor_request(sensor_id):
             sensor['active'] = not sensor['active']
 
         if(db.update_one(sensor_id, sensor)):
-            winery = db.get_winery_by_sensor_id(sensor_id)
-            if winery:
-                winery['sensor'] = sensor
-                if(db.update_one(winery['_id'], winery, 'winery')):
+            system = db.get_system_by_sensor_id(sensor_id)
+            if system:
+                system['sensor'] = sensor
+                if(db.update_one(system['_id'], system, 'winery')):
                     return {"message": "success"}, 200
 
     db.close_connection()
