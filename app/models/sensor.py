@@ -1,4 +1,4 @@
-from settings import load_database_params
+from settings import load_database_sensor_params
 from extensions import client
 import pymongo
 import os
@@ -10,10 +10,10 @@ class MongoDB():
         if(os.getenv('ENVIRONMENT') != 'developing_local'):
             self.client = client
         else:
-            self.params = load_database_params()
+            self.sensor_params = load_database_sensor_params()
             try:
                 self.client = pymongo.MongoClient(
-                    **self.params,
+                    **self.sensor_params,
                     serverSelectionTimeoutMS=10
                 )
             except Exception as err:
@@ -30,19 +30,20 @@ class MongoDB():
     def close_connection(self):
         self.client.close()
 
-    def get_collection(self, collection='winery'):
+    def get_collection(self, collection='sensor'):
         db = self.client[os.getenv("DBNAME", "smart-dev")]
         return db[collection]
 
     def insert_one(self, body):
         try:
             collection = self.get_collection()
-            return collection.insert_one(body)
+            collection.insert_one(body)
+            return True
         except Exception as err:
             print(f'Erro ao inserir no banco de dados: {err}')
             return False
 
-    def update_one(self, identifier, body, collection='winery'):
+    def update_one(self, identifier, body, collection='sensor'):
         try:
             collection = self.get_collection(collection)
 
@@ -65,16 +66,16 @@ class MongoDB():
             print(f'Erro ao deletar no banco de dados: {err}')
             return False
 
-    def get_one(self, identifier, collection='winery'):
+    def get_one(self, identifier, collection='sensor'):
         collection = self.get_collection(collection)
         document = collection.find_one({"_id": identifier})
         return document
 
-    def get_all(self, collection='winery'):
+    def get_all(self, collection='sensor'):
         collection = self.get_collection(collection)
         document = collection.find()
         return document
 
-    def get_contract_by_winery_id(self, identifier):
-        collection = self.get_collection('contracts')
-        return collection.find_one({"winery._id": identifier})
+    def get_system_by_sensor_id(self, identifier):
+        collection = self.get_collection('system')
+        return collection.find_one({"sensor._id": identifier})
