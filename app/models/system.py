@@ -1,5 +1,7 @@
 from settings import load_database_system_params
+from extensions import client
 import pymongo
+import os
 
 
 class MongoDB():
