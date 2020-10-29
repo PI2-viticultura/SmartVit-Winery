@@ -12,10 +12,7 @@ def get_all_system():
     connection_is_alive = db.test_connection()
     if connection_is_alive:
         system = db.get_all('system')
-        print(system)
         if system:
-            systems =  dumps(system)
-            print(systems)
             return dumps(system), 200
 
         return {'error': 'System not found'}, 404
