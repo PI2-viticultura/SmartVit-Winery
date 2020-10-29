@@ -1,5 +1,7 @@
 from settings import load_database_sensor_params
+from extensions import client
 import pymongo
+import os
 
 
 class MongoDB():
@@ -10,8 +12,10 @@ class MongoDB():
         else:
             self.sensor_params = load_database_sensor_params()
             try:
-                self.client = pymongo.MongoClient(**self.sensor_params,
-                                                serverSelectionTimeoutMS=10)
+                self.client = pymongo.MongoClient(
+                    **self.sensor_params,
+                    serverSelectionTimeoutMS=10
+                )
             except Exception as err:
                 print(f'Erro ao conectar no banco de dados: {err}')
 

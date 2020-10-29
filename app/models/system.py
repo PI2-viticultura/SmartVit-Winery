@@ -7,7 +7,7 @@ import os
 class MongoDB():
     def __init__(self):
         """Constructor to model class."""
-         if(os.getenv('ENVIRONMENT') != 'developing_local'):
+        if(os.getenv('ENVIRONMENT') != 'developing_local'):
             self.client = client
         else:
             self.system_params = load_database_system_params()
