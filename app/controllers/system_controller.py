@@ -12,6 +12,7 @@ def get_all_system():
     connection_is_alive = db.test_connection()
     if connection_is_alive:
         system = db.get_all('system')
+        print(system)
         if system:
             return dumps(system), 200
 
