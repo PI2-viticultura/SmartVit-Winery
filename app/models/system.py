@@ -5,12 +5,15 @@ import pymongo
 class MongoDB():
     def __init__(self):
         """Constructor to model class."""
-        self.system_params = load_database_system_params()
-        try:
-            self.client = pymongo.MongoClient(**self.system_params,
-                                              serverSelectionTimeoutMS=10)
-        except Exception as err:
-            print(f'Erro ao conectar no banco de dados: {err}')
+        if(os.getenv('ENVIRONMENT') != 'developing_local'):
+            self.client = client
+        else:
+            self.system_params = load_database_system_params()
+            try:
+                self.client = pymongo.MongoClient(**self.system_params,
+                                                serverSelectionTimeoutMS=10)
+            except Exception as err:
+                print(f'Erro ao conectar no banco de dados: {err}')
 
     def test_connection(self):
         try:
