@@ -7,6 +7,7 @@ import os
 class MongoDB():
     def __init__(self):
         """Constructor to model class."""
+        print(os.getenv('ENVIRONMENT'))
         if(os.getenv('ENVIRONMENT') != 'developing_local'):
             self.client = client
         else:
@@ -29,7 +30,7 @@ class MongoDB():
         self.client.close()
 
     def get_collection(self, collection='system'):
-        db = self.client['smart-dev']
+        db = self.client[os.getenv("DBNAME", "smart-dev")]
         return db[collection]
 
     def insert_one(self, body):

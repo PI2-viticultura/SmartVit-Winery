@@ -14,6 +14,8 @@ def get_all_system():
         system = db.get_all('system')
         print(system)
         if system:
+            systems =  dumps(system)
+            print(systems)
             return dumps(system), 200
 
         return {'error': 'System not found'}, 404
