@@ -48,23 +48,15 @@ def save_system_request(request):
         if not winery:
             return {"erro": "Insira uma vinícola válida"}, 400
 
-        if 'system' not in winery.keys():
-            system = db.insert_one(request)
-            if(system):
-                system = db.get_one(system.inserted_id, 'system')
+        if 'systems' not in winery.keys():
+            winery['systems'] = []
 
-        elif not winery['system']:
-            system = db.insert_one(request)
-            if(system):
-                system = db.get_one(system.inserted_id, 'system')
-
-        else:
-            if(db.update_one(winery['system']['_id'], request)):
-                system = db.get_one(winery['system']['_id'], 'system')
-                winery['system'] = system
+        system = db.insert_one(request)
+        if(system):
+            system = db.get_one(system.inserted_id, 'system')
 
         if system:
-            winery['system'] = system
+            winery['systems'].append(system)
             if(db.update_one(winery_id, winery, 'winery')):
                 return {"message": "success"}, 200
 
@@ -103,9 +95,23 @@ def update_system_request(system_id, request):
         if not winery:
             return {"erro": "Insira uma vinícola válida"}, 400
 
+        if 'systems' not in winery.keys():
+            winery['systems'] = []
+
         if(db.update_one(system_id, request)):
+            system_index = -1
+            count = -1
+            for system in winery['systems']:
+                count += 1
+                if system['_id'] == system_id:
+                    system_index = count
+
             system = db.get_one(system_id, 'system')
-            winery['system'] = system
+            if system_index != -1:
+                winery['systems'][system_index] = system
+            else:
+                winery['systems'].append(system)
+
             if(db.update_one(winery_id, winery, 'winery')):
                 return {"message": "success"}, 200
 
@@ -133,7 +139,21 @@ def toggle_system_request(system_id):
         if(db.update_one(system_id, system)):
             winery = db.get_winery_by_system_id(system_id)
             if winery:
-                winery['system'] = system
+                if 'systems' not in winery.keys():
+                    winery['systems'] = []
+
+                system_index = -1
+                count = -1
+                for system_item in winery['systems']:
+                    count += 1
+                    if system_item['_id'] == system_id:
+                        system_index = count
+
+                if system_index != -1:
+                    winery['systems'][system_index] = system
+                else:
+                    winery['systems'].append(system)
+
                 if(db.update_one(winery['_id'], winery, 'winery')):
                     return {"message": "success"}, 200
 

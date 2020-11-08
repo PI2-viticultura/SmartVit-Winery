@@ -77,4 +77,4 @@ class MongoDB():
 
     def get_winery_by_system_id(self, identifier):
         collection = self.get_collection('winery')
-        return collection.find_one({"system._id": identifier})
+        return collection.find_one({"systems._id": identifier})

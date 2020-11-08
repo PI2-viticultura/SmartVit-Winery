@@ -44,7 +44,12 @@ def save_winery_request(request):
         if not contract:
             return {"erro": "Insira um contrato válido"}, 400
 
-        if not contract['winery']:
+        if 'winery' not in contract.keys():
+            winery = db.insert_one(request)
+            if(winery):
+                winery = db.get_one(winery.inserted_id, 'winery')
+
+        elif not contract['winery']:
             winery = db.insert_one(request)
             if(winery):
                 winery = db.get_one(winery.inserted_id, 'winery')

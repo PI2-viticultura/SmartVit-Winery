@@ -37,8 +37,7 @@ class MongoDB():
     def insert_one(self, body):
         try:
             collection = self.get_collection()
-            collection.insert_one(body)
-            return True
+            return collection.insert_one(body)
         except Exception as err:
             print(f'Erro ao inserir no banco de dados: {err}')
             return False
@@ -78,4 +77,4 @@ class MongoDB():
 
     def get_system_by_sensor_id(self, identifier):
         collection = self.get_collection('system')
-        return collection.find_one({"sensor._id": identifier})
+        return collection.find_one({"sensors._id": identifier})
