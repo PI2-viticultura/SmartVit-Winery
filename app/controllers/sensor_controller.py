@@ -51,18 +51,15 @@ def save_sensor_request(request):
         if not system:
             return {"erro": "Insira um sistema válido"}, 400
 
-        if not system['sensor']:
-            sensor = db.insert_one(request)
-            if(sensor):
-                sensor = db.get_one(sensor.inserted_id, 'sensor')
+        if 'sensors' not in system.keys():
+            system['sensors'] = []
 
-        else:
-            if(db.update_one(system['sensor']['_id'], request)):
-                sensor = db.get_one(system['sensor']['_id'], 'sensor')
-                system['sensor'] = sensor
+        sensor = db.insert_one(request)
+        if(sensor):
+            sensor = db.get_one(sensor.inserted_id, 'sensor')
 
         if sensor:
-            system['sensor'] = sensor
+            system['sensors'].append(sensor)
             if(db.update_one(system_id, system, 'system')):
                 return {"message": "success"}, 200
 
@@ -105,8 +102,19 @@ def update_sensor_request(sensor_id, request):
             return {"erro": "Insira um Sistema válido"}, 400
 
         if(db.update_one(sensor_id, request)):
+            sensor_index = -1
+            count = -1
+            for sensor_item in system['sensors']:
+                count += 1
+                if sensor_item['_id'] == sensor_id:
+                    sensor_index = count
+
             sensor = db.get_one(sensor_id, 'sensor')
-            system['sensor'] = sensor
+            if sensor_index != -1:
+                system['sensors'][sensor_index] = sensor
+            else:
+                system['sensors'].append(sensor)
+
             if(db.update_one(system_id, system, 'system')):
                 return {"message": "success"}, 200
 
@@ -134,7 +142,18 @@ def toggle_sensor_request(sensor_id):
         if(db.update_one(sensor_id, sensor)):
             system = db.get_system_by_sensor_id(sensor_id)
             if system:
-                system['sensor'] = sensor
+                sensor_index = -1
+                count = -1
+                for sensor_item in system['sensors']:
+                    count += 1
+                    if sensor_item['_id'] == sensor_id:
+                        sensor_index = count
+
+                if sensor_index != -1:
+                    system['sensors'][sensor_index] = sensor
+                else:
+                    system['sensors'].append(sensor)
+
                 if(db.update_one(system['_id'], system, 'system')):
                     return {"message": "success"}, 200
 

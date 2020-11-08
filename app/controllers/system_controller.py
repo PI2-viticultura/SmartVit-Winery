@@ -49,15 +49,11 @@ def save_system_request(request):
             return {"erro": "Insira uma vinícola válida"}, 400
 
         if 'systems' not in winery.keys():
-            system = db.insert_one(request)
-            if(system):
-                winery['systems'] = []
-                system = db.get_one(system.inserted_id, 'system')
+            winery['systems'] = []
 
-        else:
-            system = db.insert_one(request)
-            if(system):
-                system = db.get_one(system.inserted_id, 'system')
+        system = db.insert_one(request)
+        if(system):
+            system = db.get_one(system.inserted_id, 'system')
 
         if system:
             winery['systems'].append(system)
