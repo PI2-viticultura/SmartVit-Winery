@@ -94,7 +94,7 @@ def update_system_request(system_id, request):
         winery = db.get_one(winery_id, 'winery')
         if not winery:
             return {"erro": "Insira uma vinícola válida"}, 400
-        
+
         if 'systems' not in winery.keys():
             winery['systems'] = []
 
@@ -114,7 +114,6 @@ def update_system_request(system_id, request):
 
             if(db.update_one(winery_id, winery, 'winery')):
                 return {"message": "success"}, 200
-            
 
     db.close_connection()
 
@@ -137,7 +136,6 @@ def toggle_system_request(system_id):
         else:
             system['active'] = not system['active']
 
-
         if(db.update_one(system_id, system)):
             winery = db.get_winery_by_system_id(system_id)
             if winery:
@@ -158,7 +156,7 @@ def toggle_system_request(system_id):
 
                 if(db.update_one(winery['_id'], winery, 'winery')):
                     return {"message": "success"}, 200
-    
+
     db.close_connection()
 
     return {'error': 'Something gone wrong'}, 500
