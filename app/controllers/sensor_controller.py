@@ -1,7 +1,7 @@
 from models.sensor import MongoDB
 from utils.validators import (
-    validate_fields_sensor, validate_location, validate_identifier,
-    validate_type, validate_situation, validate_system_id
+    validate_fields_sensor, validate_identifier,
+    validate_situation, validate_system_id
 )
 from bson.json_util import dumps
 from bson import ObjectId
@@ -26,14 +26,8 @@ def save_sensor_request(request):
             "erro": "Sua requisição não informou todos os campos necessários"
         }, 400
 
-    if not validate_location(request):
-        return {"erro": "Não é possível enviar localização vazia"}, 400
-
     if not validate_identifier(request):
         return {"erro": "Não é possível enviar identificador vazio"}, 400
-
-    if not validate_type(request):
-        return {"erro": "Não é possível enviar tipo de sensor vazio"}, 400
 
     if not validate_situation(request):
         return {"erro": "Não é possível enviar situação do sensor vazio"}, 400
@@ -92,14 +86,9 @@ def update_sensor_request(sensor_id, request):
             "erro": "Sua requisição não informou todos os campos necessários"
         }, 400
 
-    if not validate_location(request):
-        return {"erro": "Não é possível enviar localização vazia"}, 400
 
     if not validate_identifier(request):
         return {"erro": "Não é possível enviar identificador vazio"}, 400
-
-    if not validate_type(request):
-        return {"erro": "Não é possível enviar tipo de sensor vazio"}, 400
 
     if not validate_situation(request):
         return {"erro": "Não é possível enviar situação do sensor vazio"}, 400
