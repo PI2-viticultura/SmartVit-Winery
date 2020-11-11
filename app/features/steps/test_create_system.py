@@ -31,4 +31,4 @@ def step_impl_when(context):
 @then('confirma se a listagem do cadastro do sistema foi pega')
 def step_impl_then(context):
     print('POST rep code ;'+str(response_codes['POST']))
-    assert response_codes['POST'] is 200
+    assert response_codes['POST'] == 200

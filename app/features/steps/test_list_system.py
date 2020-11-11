@@ -22,4 +22,4 @@ def step_impl_when(context):
 @then('confirma se a listagem do sistema foi pega')
 def step_impl_then(context):
     print('GET rep code ;'+str(response_codes['GET']))
-    assert response_codes['GET'] is 200
+    assert response_codes['GET'] == 200
