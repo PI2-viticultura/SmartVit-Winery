@@ -86,7 +86,7 @@ def save_sensor_request(request):
     return {'error': 'Something gone wrong'}, 500
 
 
-def update_sensor_request(sensor_id_str, request):
+def update_sensor_request(sensor_id, request):
     if not validate_fields_sensor(request):
         return {
             "erro": "Sua requisição não informou todos os campos necessários"
@@ -107,7 +107,7 @@ def update_sensor_request(sensor_id_str, request):
     if not validate_system_id(request):
         return {"erro": "Não é possível enviar id de sistema vazio"}, 400
 
-    sensor_id = ObjectId(sensor_id_str)
+    sensor_id = ObjectId(sensor_id)
     system_id = ObjectId(request['system_id'])
     request.pop('system_id', None)
 
@@ -143,7 +143,7 @@ def update_sensor_request(sensor_id_str, request):
                     count = -1
                     for system_item in winery['systems']:
                         count += 1
-                        if system_item['_id']['$oid'] == sensor_id_str:
+                        if system_item['_id'] == system_id:
                             system_index = count
 
                     if system_index != -1:
