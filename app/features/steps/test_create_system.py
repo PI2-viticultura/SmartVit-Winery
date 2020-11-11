@@ -15,7 +15,7 @@ def step_impl_given(context):
 
 @when('ele regista novo conteudo do sistema da solicitacao')
 def step_impl_when(context):
-    request_bodies['POST'] = {"latitude": 1454.55, 
+    request_bodies['POST'] = {"latitude": 1454.55,
                               "longitude": 154895.12,
                               "status": "Desativado",
                               "winery_id": "5fa0c880d578d4bc349dc376"

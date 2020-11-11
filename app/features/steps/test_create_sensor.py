@@ -15,7 +15,7 @@ def step_impl_given(context):
 
 @when('ele regista novo conteudo do sensor da solicitacao')
 def step_impl_when(context):
-    request_bodies['POST'] = {"location": "Norte", 
+    request_bodies['POST'] = {"location": "Norte",
                               "identifier": "KXY",
                               "type": "Series X",
                               "situation": "Ativo",

@@ -15,7 +15,7 @@ def step_impl_given(context):
 
 @when('ele regista novo conteudo da solicitacao')
 def step_impl_when(context):
-    request_bodies['POST'] = {"name": "Vinicola dos Alveres", 
+    request_bodies['POST'] = {"name": "Vinicola dos Alveres",
                               "address": "Fazendas do Sul - RS",
                               "contract_id": "5f87a04fff9628aaeeea43a9"
                              }
