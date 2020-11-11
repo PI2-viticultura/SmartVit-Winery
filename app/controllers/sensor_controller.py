@@ -61,14 +61,32 @@ def save_sensor_request(request):
         if sensor:
             system['sensors'].append(sensor)
             if(db.update_one(system_id, system, 'system')):
-                return {"message": "success"}, 200
+                winery = db.get_winery_by_system_id(system_id)
+                if winery:
+                    if 'systems' not in winery.keys():
+                        winery['systems'] = []
+
+                    system_index = -1
+                    count = -1
+                    for system_item in winery['systems']:
+                        count += 1
+                        if system_item['_id'] == system_id:
+                            system_index = count
+
+                    if system_index != -1:
+                        winery['systems'][system_index] = system
+                    else:
+                        winery['systems'].append(system)
+
+                    if(db.update_one(winery['_id'], winery, 'winery')):
+                        return {"message": "success"}, 200
 
     db.close_connection()
 
     return {'error': 'Something gone wrong'}, 500
 
 
-def update_sensor_request(sensor_id, request):
+def update_sensor_request(sensor_id_str, request):
     if not validate_fields_sensor(request):
         return {
             "erro": "Sua requisição não informou todos os campos necessários"
@@ -89,7 +107,7 @@ def update_sensor_request(sensor_id, request):
     if not validate_system_id(request):
         return {"erro": "Não é possível enviar id de sistema vazio"}, 400
 
-    sensor_id = ObjectId(sensor_id)
+    sensor_id = ObjectId(sensor_id_str)
     system_id = ObjectId(request['system_id'])
     request.pop('system_id', None)
 
@@ -106,7 +124,7 @@ def update_sensor_request(sensor_id, request):
             count = -1
             for sensor_item in system['sensors']:
                 count += 1
-                if sensor_item['_id'] == sensor_id:
+                if sensor_item['_id']['$oid'] == sensor_id:
                     sensor_index = count
 
             sensor = db.get_one(sensor_id, 'sensor')
@@ -116,7 +134,25 @@ def update_sensor_request(sensor_id, request):
                 system['sensors'].append(sensor)
 
             if(db.update_one(system_id, system, 'system')):
-                return {"message": "success"}, 200
+                winery = db.get_winery_by_system_id(system_id)
+                if winery:
+                    if 'systems' not in winery.keys():
+                        winery['systems'] = []
+
+                    system_index = -1
+                    count = -1
+                    for system_item in winery['systems']:
+                        count += 1
+                        if system_item['_id']['$oid'] == sensor_id_str:
+                            system_index = count
+
+                    if system_index != -1:
+                        winery['systems'][system_index] = system
+                    else:
+                        winery['systems'].append(system)
+
+                    if(db.update_one(winery['_id'], winery, 'winery')):
+                        return {"message": "success"}, 200
 
     db.close_connection()
 
