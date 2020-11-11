@@ -20,3 +20,8 @@ def winery_put(id):
         return controller.update_winery_request(id, request.json)
     elif request.method == "PATCH":
         return controller.toggle_winery_request(id)
+
+
+@app.route("/winery_by_user/<string:user_id>", methods=["GET"])
+def winery_by_user(user_id):
+    return controller.get_winery_by_user(user_id)

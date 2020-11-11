@@ -19,6 +19,20 @@ def get_all_winery():
     return {'error': 'Something gone wrong'}, 500
 
 
+def get_winery_by_user(user_id):
+    db = MongoDB()
+    connection_is_alive = db.test_connection()
+    if connection_is_alive:
+        user_id = ObjectId(user_id)
+        winery = db.get_winery_by_user(user_id)
+        if winery:
+            return dumps(winery), 200
+
+        return {'error': 'Winery not found'}, 404
+
+    return {'error': 'Something gone wrong'}, 500
+
+
 def save_winery_request(request):
     if not validate_fields(request):
         return {
