@@ -8,4 +8,4 @@ Feature: aptar requisicao feita no frontend e enviar informacoes do sensor ao mi
     Scenario: Administrador visualiza os sensores cadastradas na aplicacao
         Given a pagina de gerenciar sensores
         When ele visualizar os sensores desejados
-        Then o bff requisita o microsservico do sensor
+        Then confirma se a listagem foi pega

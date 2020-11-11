@@ -3,6 +3,7 @@ import requests
 
 request_headers = {}
 request_bodies = {}
+response_codes = {}
 api_url = None
 
 
@@ -18,19 +19,16 @@ def step_impl_when(context):
     request_bodies['POST'] = {"latitude": 1454.55,
                               "longitude": 154895.12,
                               "status": "Desativado",
-                              "winery_id": "5fa0c880d578d4bc349dc376"
-                             }
+                              "winery_id": "5fa0c880d578d4bc349dc376"}
     response = requests.post(
                             'https://smartvit-winery-dev.herokuapp.com/system',
-                             json=request_bodies['POST']
+                            json=request_bodies['POST']
                             )
-    assert response.status_code == 200
+    statuscode = response.status_code
+    response_codes['POST'] = statuscode
 
 
-@then('o bff requisita o microsservico para criar informacao do sistema')
+@then('confirma se a listagem do cadastro do sistema foi pega')
 def step_impl_then(context):
-    response = requests.post(
-                            'https://smartvit-admin-bff-dev.herokuapp.com/bff',
-                             json=request_bodies['POST']
-                            )
-    assert response.status_code == 200
+    print('POST rep code ;'+str(response_codes['POST']))
+    assert response_codes['POST'] is 200

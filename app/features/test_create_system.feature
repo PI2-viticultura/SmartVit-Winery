@@ -8,4 +8,8 @@ Feature: criar requisicao e enviar os dados do sistema ao microsservico winery a
     Scenario: Administrador cadastra os sistemas na aplicacao
         Given a pagina de criar novo sistema
         When ele regista novo conteudo do sistema da solicitacao
-        Then o bff requisita o microsservico para criar informacao do sistema
+        | latitude | longitude | status     | winery_id                |
+        | 1454.55  | 154895.12 | Desativado | 5fa0c880d578d4bc349dc376 |
+        Then confirma se a listagem do cadastro do sistema foi pega
+        | latitude | longitude | status     | winery_id                |
+        | 1454.55  | 154895.12 | Desativado | 5fa0c880d578d4bc349dc376 |

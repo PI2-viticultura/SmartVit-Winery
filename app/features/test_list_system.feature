@@ -8,4 +8,4 @@ Feature: aptar requisicao feita no frontend e enviar informacoes do sensor ao mi
     Scenario: Administrador visualiza os sistemas cadastradas na aplicacao
         Given a pagina de gerenciar sistemas
         When ele visualizar os sistemas desejados
-        Then o bff requisita o microsservico do sistema
+        Then confirma se a listagem do sistema foi pega

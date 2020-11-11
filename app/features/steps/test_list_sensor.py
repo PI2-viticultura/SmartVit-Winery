@@ -1,7 +1,9 @@
 from behave import given, when, then
 import requests
 
-api_url=None
+api_url = None
+response_codes = {}
+
 
 @given('a pagina de gerenciar sensores')
 def step_impl_given(context):
@@ -9,13 +11,15 @@ def step_impl_given(context):
     api_url = 'https://smartvit-winery-dev.herokuapp.com/sensor'
     print('url :'+api_url)
 
+
 @when('ele visualizar os sensores desejados')
 def step_impl_when(context):
     response = requests.get('https://smartvit-winery-dev.herokuapp.com/sensor')
-    assert response.status_code == 200
+    statuscode = response.status_code
+    response_codes['GET'] = statuscode
 
 
-@then('o bff requisita o microsservico do sensor')
+@then('confirma se a listagem foi pega')
 def step_impl_then(context):
-    response = requests.get('https://smartvit-admin-bff-dev.herokuapp.com/sensor')
-    assert response.status_code == 200
+    print('GET rep code ;'+str(response_codes['GET']))
+    assert response_codes['GET'] is 200
