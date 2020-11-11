@@ -78,3 +78,7 @@ class MongoDB():
     def get_contract_by_winery_id(self, identifier):
         collection = self.get_collection('contracts')
         return collection.find_one({"winery._id": identifier})
+
+    def get_winery_by_user(self, user_id):
+        collection = self.get_collection('winery')
+        return collection.find_one({"responsibles._id": user_id})
