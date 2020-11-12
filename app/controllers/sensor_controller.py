@@ -86,7 +86,6 @@ def update_sensor_request(sensor_id, request):
             "erro": "Sua requisição não informou todos os campos necessários"
         }, 400
 
-
     if not validate_identifier(request):
         return {"erro": "Não é possível enviar identificador vazio"}, 400
 
