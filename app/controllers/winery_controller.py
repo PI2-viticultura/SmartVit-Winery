@@ -69,9 +69,14 @@ def save_winery_request(request):
                 winery = db.get_one(winery.inserted_id, 'winery')
 
         else:
-            if(db.update_one(contract['winery']['_id'], request)):
-                winery = db.get_one(contract['winery']['_id'], 'winery')
-                contract['winery'] = winery
+            if "_id" in contract['winery']:
+                if(db.update_one(contract['winery']['_id'], request)):
+                    winery = db.get_one(contract['winery']['_id'], 'winery')
+                    contract['winery'] = winery
+                else:
+                    winery = db.insert_one(request)
+                    if(winery):
+                        winery = db.get_one(winery.inserted_id, 'winery')
 
         if winery:
             contract['winery'] = winery
