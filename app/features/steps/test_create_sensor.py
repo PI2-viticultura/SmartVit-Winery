@@ -10,19 +10,17 @@ bff_url = None
 @given('a pagina de criar novo sensor')
 def step_impl_given(context):
     global api_url
-    api_url = 'https://smartvit-winery-dev.herokuapp.com/sensor'
+    api_url = 'https://smartvit-winery-stg.herokuapp.com/sensor'
     print('url :'+api_url)
 
 
 @when('ele regista novo conteudo do sensor da solicitacao')
 def step_impl_when(context):
-    request_bodies['POST'] = {"location": "Norte",
-                              "identifier": "KXY",
-                              "type": "Series X",
+    request_bodies['POST'] = {"identifier": "KXY",
                               "situation": "Ativo",
                               "system_id": "5f9ee3c0b62731672936ca28"}
     response = requests.post(
-                            'https://smartvit-winery-dev.herokuapp.com/sensor',
+                            'https://smartvit-winery-stg.herokuapp.com/sensor',
                             json=request_bodies['POST']
                             )
     assert response.status_code == 200
@@ -31,7 +29,7 @@ def step_impl_when(context):
 @then('o bff requisita o microsservico para criar informacao do sensor')
 def step_impl_then(context):
     global bff_url
-    bff_url = 'https://smartvit-admin-bff-dev.herokuapp.com/sensor'
+    bff_url = 'https://smartvit-admin-bff-stg.herokuapp.com/sensor'
     response = requests.post(
                             bff_url,
                             json=request_bodies['POST']

@@ -10,7 +10,7 @@ api_url = None
 @given('a pagina de criar novo sistema')
 def step_impl_given(context):
     global api_url
-    api_url = 'https://smartvit-winery-dev.herokuapp.com/system'
+    api_url = 'https://smartvit-winery-stg.herokuapp.com/system'
     print('url :'+api_url)
 
 
@@ -21,7 +21,7 @@ def step_impl_when(context):
                               "status": "Desativado",
                               "winery_id": "5fa0c880d578d4bc349dc376"}
     response = requests.post(
-                            'https://smartvit-winery-dev.herokuapp.com/system',
+                            'https://smartvit-winery-stg.herokuapp.com/system',
                             json=request_bodies['POST']
                             )
     statuscode = response.status_code
