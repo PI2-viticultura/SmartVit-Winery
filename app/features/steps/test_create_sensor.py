@@ -16,9 +16,11 @@ def step_impl_given(context):
 
 @when('ele regista novo conteudo do sensor da solicitacao')
 def step_impl_when(context):
-    request_bodies['POST'] = {"identifier": "KXY",
+    request_bodies['POST'] = {"location": "Norte",
+                              "identifier": "KXY",
+                              "type": "Series X",
                               "situation": "Ativo",
-                              "system_id": "5f9ee3c0b62731672936ca28"}
+                              "system_id": "5fadfec0b2126679ab246983"}
     response = requests.post(
                             'https://smartvit-winery-stg.herokuapp.com/sensor',
                             json=request_bodies['POST']

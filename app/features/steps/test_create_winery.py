@@ -16,11 +16,11 @@ def step_impl_given(context):
 
 @when('ele regista novo conteudo da solicitacao')
 def step_impl_when(context):
-    request_bodies['POST'] = {"name": "Vinicola dos Alveres",
+    request_bodies['POST'] = {"name": "Vinicola Beta",
                               "address": "Fazendas do Sul - RS",
-                              "contract_id": "5fad327338b2670687db57e1"}
+                              "contract_id": "5fadb2830685d5591099ec2c"}
     response = requests.post(
-                            'https://smartvit-winery-stg.herokuapp.com/winery',
+                            api_url,
                             json=request_bodies['POST']
                             )
     assert response.status_code == 200
