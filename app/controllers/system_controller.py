@@ -108,6 +108,7 @@ def update_system_request(system_id, request):
 
             system = db.get_one(system_id, 'system')
             if system_index != -1:
+                system['sensors'] = winery['systems'][system_index]['sensors']
                 winery['systems'][system_index] = system
             else:
                 winery['systems'].append(system)

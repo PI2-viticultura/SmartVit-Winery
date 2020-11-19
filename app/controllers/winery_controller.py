@@ -70,7 +70,9 @@ def save_winery_request(request):
 
         else:
             if "_id" in contract['winery']:
-                return {"message": "Este contrato já possui uma vinícola vinculada"}, 201
+                return {
+                    "message": "Este contrato já possui uma vinícola vinculada"
+                }, 201
             else:
                 winery = db.insert_one(request)
                 if(winery):
