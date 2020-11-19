@@ -37,7 +37,7 @@ def validate_winery(request):
 
 
 def validate_fields_sensor(request):
-    fields = ['identifier', 'situation', 'system_id']
+    fields = ['identifier', 'type', 'system_id']
     return all(field in request.keys() for field in fields)
 
 
@@ -45,8 +45,8 @@ def validate_identifier(request):
     return request["identifier"]
 
 
-def validate_situation(request):
-    return request["situation"]
+def validate_type(request):
+    return request["type"]
 
 
 def validate_system_id(request):
